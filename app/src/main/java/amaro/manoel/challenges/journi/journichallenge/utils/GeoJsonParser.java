@@ -48,13 +48,13 @@ public class GeoJsonParser {
 
     private Feature buildFeature(JSONObject src) throws JSONException {
         Feature feature = new Feature();
-        feature.name = src.getJSONObject("properties").getString("name");
+        feature.setName(src.getJSONObject("properties").getString("name"));
         JSONObject geometry = src.getJSONObject("geometry");
         String type = geometry.getString("type");
         if (type.equals("Polygon")) {
-            feature.geometries.add(buildPolygon(geometry));
+            feature.getGeometries().add(buildPolygon(geometry));
         } else if (type.equals("MultiPolygon")) {
-            feature.geometries.addAll(buildMultiPolygon(geometry));
+            feature.getGeometries().addAll(buildMultiPolygon(geometry));
         }
         return  feature;
     }
@@ -62,7 +62,7 @@ public class GeoJsonParser {
     private Feature.Geometry buildPolygon(JSONObject src) throws JSONException {
         Feature.Geometry geometry = new Feature.Geometry();
         JSONArray coordinates = src.getJSONArray("coordinates");
-        geometry.coordinates.addAll(buildCoordinates(coordinates));
+        geometry.getCoordinates().addAll(buildCoordinates(coordinates));
         return geometry;
     }
 
@@ -84,7 +84,7 @@ public class GeoJsonParser {
         for (int i = 0; i < coordinates.length(); i++) {
             JSONArray innerCoordinates = coordinates.getJSONArray(i);
             Feature.Geometry innerGeometry = new Feature.Geometry();
-            innerGeometry.coordinates.addAll(buildCoordinates(innerCoordinates));
+            innerGeometry.getCoordinates().addAll(buildCoordinates(innerCoordinates));
             geometries.add(innerGeometry);
         }
         return geometries;
